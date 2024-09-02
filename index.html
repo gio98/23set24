@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>2 Anos y 11 meses juntos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.typekit.net/trt3ngp.css"><link rel="stylesheet" href="./style.css">
+<script
+  src="https://code.jquery.com/jquery-3.7.1.js"
+  integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+  crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<canvas class="webgl"></canvas>
+<h1 id="title1">
+  Feliz 2 Anos y 11 meses juntos!!!
+</h1>
+
+<button id="play-music" type="button" aria-label="Play music"><svg fill="currentColor" viewBox="0 0 512 512" width="100" title="music">
+    <path d="M470.38 1.51L150.41 96A32 32 0 0 0 128 126.51v261.41A139 139 0 0 0 96 384c-53 0-96 28.66-96 64s43 64 96 64 96-28.66 96-64V214.32l256-75v184.61a138.4 138.4 0 0 0-32-3.93c-53 0-96 28.66-96 64s43 64 96 64 96-28.65 96-64V32a32 32 0 0 0-41.62-30.49z" />
+  </svg></button>
+<script type="x-shader/x-vertex" id="vertexShader">
+  #define M_PI 3.1415926535897932384626433832795
+uniform float uTime;
+uniform float uSize;
+attribute float aScale;
+attribute vec3 aColor;
+attribute float random;
+attribute float random1;
+attribute float aSpeed;
+varying vec3 vColor;
+varying vec2 vUv;
+
+void main() {
+  float sign = 2.0* (step(random, 0.5) -.5);
+  float t = sign*mod(-uTime *  aSpeed* 0.005  + 10.0*aSpeed*aSpeed, M_PI);
+  float a = pow(t, 2.0) * pow((t - sign * M_PI), 2.0);
+  float radius = 0.14;
+  vec3 myOffset =
+      vec3(t,  1.0, 0.0);
+  myOffset = vec3(radius *16.0 * pow(sin(t), 2.0) * sin(t), radius * (13.0 * cos(t) - 5.0 * cos(2.0 * t) - 2.0 * cos(3.0 * t) - cos(4.0 * t)), .15*(a*(random1 - .5))*sin(abs(10.0*(sin(.2*uTime + .2*random)))*t));
+  vec3 displacedPosition = myOffset;
+  vec4 modelPosition = modelMatrix * vec4(displacedPosition.xyz, 1.0);
+
+  vec4 viewPosition = viewMatrix * modelPosition;
+  viewPosition.xyz += position * aScale * uSize * pow(a, .5) * .5;
+  gl_Position = projectionMatrix * viewPosition;
+
+  vColor = aColor;
+  vUv = uv;
+}
+</script>
+
+<script type="x-shader/x-fragment" id="fragmentShader">
+  varying vec3 vColor;
+varying vec2 vUv;
+
+void main() {
+  vec2 uv = vUv;
+  vec3 color = vColor;
+  float strength = distance(uv, vec2(0.5));
+  strength *= 2.0;
+  strength = 1.0 - strength;
+  gl_FragColor = vec4(strength * color, 1.0);
+}
+</script>
+<script type="x-shader/x-vertex" id="vertexShader1">
+  #define M_PI 3.1415926535897932384626433832795
+
+
+uniform float uTime;
+uniform float uSize;
+attribute float aScale;
+attribute vec3 aColor;
+attribute float phi;
+attribute float random;
+attribute float random1;
+varying vec3 vColor;
+varying vec2 vUv;
+
+void main() {
+  float t = 0.01 * uTime + 12.0;
+  float angle = phi;
+  
+  t = mod((-uTime + 100.0) * 0.06* random1 + random *2.0 * M_PI , 2.0 * M_PI);
+  vec3 myOffset = vec3(5.85*cos(angle * (t )), 2.0*(t - M_PI), 3.0*sin(angle * (t )/t));
+vec4 modelPosition = modelMatrix * vec4(myOffset, 1.0);
+  vec4 viewPosition = viewMatrix * modelPosition;
+  viewPosition.xyz += position * aScale * uSize;
+  gl_Position = projectionMatrix * viewPosition;
+
+  vColor = aColor;
+  vUv = uv;
+}
+</script>
+
+<script type="x-shader/x-fragment" id="fragmentShader1">
+  uniform sampler2D uTex;
+varying vec3 vColor;
+varying vec2 vUv;
+
+void main() {
+  vec2 uv = vUv;
+  vec3 color = vColor;
+  float strength = distance(uv, vec2(0.5, .65));
+  strength *= 2.0;
+  strength = 1.0 - strength;
+  vec3 texture = texture2D(uTex, uv).rgb;
+  gl_FragColor = vec4(texture * color * (strength + .3), 1.);
+}
+</script>
+<!-- partial -->
+  <script type="module" src="./script.js"></script>
+  <h1 id="text1">
+    23 Settembre 2024
+  </h1>
+  <h1 id="title2" style="
+  left: -119vh;
+  top: 17vh;
+  font-size: 228px;z-index: 99;">A</h1>
+  <h1 id="title3" style="left: 121vh;
+  top: 17vh;
+  font-size: 228px; z-index: 99;">
+    G
+  </h1>
+<script>
+    //    button click
+    $("#play-music").click(function(){
+    setTimeout(function(){
+        $('#title1').css({"visibility":"visible"});
+    }, 3490);
+    setTimeout(function(){
+        $('#title2').css({"visibility":"visible"});
+    }, 5000);  
+    setTimeout(function(){
+        $('#title3').css({"visibility":"visible"});
+    }, 6000);   
+    setTimeout(function(){
+        $('#text1').css({"visibility":"visible"});
+    }, 8000); 
+    setTimeout(function(){
+        $('#exampleModal').modal('show');
+        $('#play-music').css({"visibility":"hidden"});
+    }, 18000); 
+});
+
+</script>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <img id="orsetti" src="orsetti.png" alt="">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <p style="color: black;"> Felices 2 años y 11 meses a mi compañera de vida que cada día me regala paz y amor en el fondo de mi dulce corazón que vive sólo y sólo para ti que eres más importante que el oxígeno que respiro y el agua que bebo que te di. la magia de la felicidad de amarte a ti Andrea amor de mi vida que eres cada día la estrella que guía mi camino en el universo de la vida y desde la mañana con el brillo de tu dulce sonrisa me haces despertar delicadamente con tu dulce caricias y me encanta admirar tu dulce y delicada sonrisa que hace que mi corazón lata rápido, listos juntos para comenzar un nuevo día extraordinario y me encanta estar aquí a tu lado y abrazarte fuerte contra mí y darte todo mi amor y abrazarte fuerte mis brazos y hacerte cerrar suavemente los ojos para hacerte dormir con seguridad en mi pecho mientras te canto suavemente la canción de buenas noches mientras protejo tu preciosa alma en lo profundo de mi corazón lejos de todo daño y me encanta enfrentar juntos cada desafío que la vida tiene. nos lanza al frente y estoy orgulloso de ti por cómo con tu extraordinaria fuerza nunca te rindes y logras con todas tus fuerzas enfrentar cada obstáculo y me quedo sin palabras todos los días por lo increíblemente que pones todo de ti en ello. y la pasión que sale de tu corazón por ejemplo para afrontar el camino universitario porque cada día eres el número uno en todo el universo y esto me da la fuerza para afrontar mi trabajo cada día y cada obstáculo que la vida nos pone delante y Todo esto lo enfrentamos juntos y estoy orgulloso de estar aquí a tu lado para darte mi fuerza y animarte para apoyarte en todo lo que hagas, porque incluso en los momentos difíciles nunca olvides que no estás solo, cerca. tus ojos y escucha tu dulce corazón y estoy aquí a tu lado para animarte y ayudarte con todo el amor y como siempre me enseñas somos capaces de superarlo y ganarlo todo porque ponemos el amor y las ganas de siempre. llega a la meta y sobre todo amor de mi vida que eres extraordinario y todo lo que haces y logras lo haces desde muy dentro con todo el corazón y esto te hace única porque nadie afronta las cosas como tú las afrontas y te lo agradezco desde desde el fondo de mi corazón por enseñarme todo esto y cada momento tomo ejemplo de ti y siempre trato de dar lo mejor de mí para superarme cada día y te agradezco por estar siempre aquí a mi lado y animarme a afrontar mi trabajo. Gracias por hacerme vivir en el universo infinito de tus cálidos e intensos abrazos sin los cuales no puedo vivir, donde mi alma se une a la tuya y me siento cada día lejos de todo mal mientras como un niño me siento relajado y cierro suavemente mis ojos. y saboreo el latido de tu dulce corazón que acoge cada día mi alma y me hace unirme a tu alma donde juntos nos convertimos en una sola persona y quiero mantenerme a salvo de todo mal dentro de tus infinitos abrazos por siempre y más allá, mientras me llenas. con tus dulces besos que son más importantes que el oxígeno que respiro y que me das fuerza infinita para protegerte aquí con todo de mí porque mereces cada momento y solo todas las cosas hermosas que el universo tiene para ofrecerte! Falta 1 mes para nuestros 3 años y hoy soy aún más feliz de estar aquí a tu lado amor de mi vida y nuestro increíble amor se hace más fuerte día tras día y nunca dejaré de decirte gracias por existir aquí a mi lado y por cómo me has mejorado a cada momento y para darme la oportunidad de hacerte feliz y protegerte aquí a mi lado y quiero quedarme aquí única y exclusivamente para siempre y más allá a tu lado porque cada día eres el motor que alimenta mi vida, la mia mogliettina super extraordinaria y increible , eres la estrella que guía mi camino eres mi pingüino precioso, eres mi compañera de vida, eres mi vida y mi alma y cada día me mantienes vivo y me das la fuerza para levantarme de la cama para afrontar la vida juntos, eres mi ángel guardián más sabio en todo el cielo, eres mi todo, ¡gracias inmensamente por existir y por todo lo especial que haces por mí! ¡Te amo inmensamente desde el fondo de mi corazón que late para acoger tu preciosa alma y tenerte cerca aquí en lo más profundo de mi corazón y protegerte mientras te abrazo fuerte a mí con todo el amor! ¡Te amo infinitamente desde el fondo de mi mente donde eres el pensamiento más increíble y único que me acompaña todos los días y que quiero hacer durante toda mi vida! Te amo ilimitadamente, alma y cuerpo que existen sólo y sólo para que tú te protejas y nos unamos contigo siempre para ser una sola persona y quiero estar aquí a tu lado hoy, mañana por siempre y más allá. Felices 2 años y 11 meses juntos, amor de mi vida, que Dios te bendiga cada día, persona increíble y única que eres, y bendiga nuestra increíble relación y nuestro precioso amor por el resto de nuestras vidas y más allá. A+G+GIOAN = FAMILIA HOY, MAÑANA, SIEMPRE Y MÁS ALLÁ!! </p>
+      </div>
+      <div class="modal-footer">
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
