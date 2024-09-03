@@ -15,8 +15,8 @@ body {
 }
 .webgl {
   position: fixed;
-  width: 100vw;
-  height: 100vh;
+  width: 100vw !important;
+  height: 100vh !important;
   top: 0;
   left: 0;
   outline: none;
@@ -29,6 +29,7 @@ body::before {
   inset: 1rem;
   z-index: 100;
   pointer-events: none;
+  
 }
 
 h1 {
@@ -74,7 +75,7 @@ svg {
 
 #text1 {
  
-  top: 87vh !important;
+  top: 64vh !important;
   visibility: hidden;
   
  
@@ -85,5 +86,5 @@ svg {
 }
 
 #orsetti {
-  width: 447px;
+  width: 325px;
 }
